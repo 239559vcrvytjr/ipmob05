@@ -50,10 +50,6 @@ function addClient(data) {
   });
 }
 
-function addRandomClient() {
-  addClient(getRandomData());
-}
-
 function deleteClient(id) {
   const transaction = db.transaction(["clientsStore"], "readwrite");
   const store = transaction.objectStore("clientsStore");
@@ -191,7 +187,9 @@ searchBox.addEventListener("input", (e) => {
 
 document.getElementById("addRandomClientButton").addEventListener("click", addRandomClient);
 
-function getRandomData() {
+function addRandomClient(e) {
+  e.preventDefault();
+
   function randomString(length) {
     const sourceChars = "abcdefghijklmnopqrstuvwxyz";
     const stringChars = [...Array(length)].map(() =>
@@ -219,7 +217,7 @@ function getRandomData() {
   const requirePersonal = rB();
   const requireBusiness = rB();
 
-  return {
+  const data = {
     firstName: rS(10).toTitleCase(),
     lastName: rS(15).toTitleCase(),
     address: rS(10).toTitleCase() + " " + rN(2, false) + "/" + rN(1),
@@ -232,6 +230,11 @@ function getRandomData() {
     nip: requireBusiness ? rN(3) + "-" + rN(2) + "-" + rN(2) + "-" + rN(3) : undefined,
     marketing: rB(),
   };
+
+  for (const [k, v] of Object.entries(data)) {
+    formElem.elements[k].checked = v;
+    formElem.elements[k].value = v || "";
+  }
 }
 
 // Remove database data
