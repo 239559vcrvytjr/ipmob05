@@ -1,13 +1,3 @@
-String.prototype.invertCase = function () {
-  return this.split()
-    .map((chr) => {
-      if (chr.toUpperCase() === chr) return chr.toLowerCase();
-      if (chr.toLowerCase() === chr) return chr.toUpperCase();
-      return chr;
-    })
-    .join();
-};
-
 String.prototype.toTitleCase = function () {
   return this.split(" ")
     .map((word) => word[0].toUpperCase() + word.substr(1))
@@ -178,14 +168,14 @@ document.getElementById("invertStringCase").addEventListener("click", invertStri
 function invertStringCase(e) {
   e.preventDefault();
 
-  const data = getNormalizedFormData();
-  for (const [k, v] of Object.entries(data)) {
-    try {
-      data[k] = v.invertCase();
-    } catch {}
-  }
+  const worker = new Worker("worker.js");
+  worker.postMessage(getNormalizedFormData());
 
-  alert(JSON.stringify(data, null, 2));
+  worker.addEventListener("message", (e) => {
+    for (const [k, v] of Object.entries(e.data)) {
+      formElem.elements[k].value = v;
+    }
+  });
 }
 
 // Handling search box
