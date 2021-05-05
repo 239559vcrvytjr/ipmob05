@@ -1,3 +1,19 @@
+String.prototype.invertCase = function () {
+  return this.split()
+    .map((chr) => {
+      if (chr.toUpperCase() === chr) return chr.toLowerCase();
+      if (chr.toLowerCase() === chr) return chr.toUpperCase();
+      return chr;
+    })
+    .join();
+};
+
+String.prototype.toTitleCase = function () {
+  return this.split(" ")
+    .map((word) => word[0].toUpperCase() + word.substr(1))
+    .join();
+};
+
 // Database initialization
 
 const DATABASE_NAME = "clientsDatabase";
@@ -141,16 +157,36 @@ function deleteAllClientRows() {
 
 const formElem = document.getElementById("form");
 
-formElem.addEventListener("submit", (e) => {
-  e.preventDefault();
-
+function getNormalizedFormData() {
   const data = Object.fromEntries(new FormData(formElem));
   data["business"] = !!data["business"];
   data["marketing"] = !!data["marketing"];
-  addClient(data);
+  return data;
+}
 
+formElem.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  addClient(getNormalizedFormData());
   formElem.reset();
 });
+
+// Change case for form data
+
+document.getElementById("invertStringCase").addEventListener("click", invertStringCase);
+
+function invertStringCase(e) {
+  e.preventDefault();
+
+  const data = getNormalizedFormData();
+  for (const [k, v] of Object.entries(data)) {
+    try {
+      data[k] = v.invertCase();
+    } catch {}
+  }
+
+  alert(JSON.stringify(data, null, 2));
+}
 
 // Handling search box
 
@@ -166,12 +202,6 @@ searchBox.addEventListener("input", (e) => {
 document.getElementById("addRandomClientButton").addEventListener("click", addRandomClient);
 
 function getRandomData() {
-  String.prototype.toTitleCase = function () {
-    return this.split(" ")
-      .map((word) => word[0].toUpperCase() + word.substr(1))
-      .join();
-  };
-
   function randomString(length) {
     const sourceChars = "abcdefghijklmnopqrstuvwxyz";
     const stringChars = [...Array(length)].map(() =>
