@@ -1,5 +1,5 @@
 String.prototype.invertCase = function () {
-  return this.split()
+  return this.split("")
     .map((chr) => {
       switch (true) {
         case chr.toUpperCase() === chr:
@@ -10,7 +10,7 @@ String.prototype.invertCase = function () {
           return chr;
       }
     })
-    .join();
+    .join("");
 };
 
 onmessage = function (e) {
