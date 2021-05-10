@@ -35,10 +35,16 @@
         border: 2px solid #ff0000;
       }
 
-      img {
+      #imgWrapper {
         border: 2px solid #0000ff;
         height: 150px;
         width: 200px;
+      }
+
+      #img {
+        width: inherit;
+        height: inherit;
+        opacity: 0.5;
       }
     </style>
   </head>
@@ -69,9 +75,9 @@
     </table>
     <h2>Dodaj</h2>
     <form id="form">
-      <p>
+      <div id="imgWrapper">
         <img id="img" src="/" />
-      </p>
+      </div>
       <p>
         <label for="url">URL</label>
         <input id="url" name="url" />

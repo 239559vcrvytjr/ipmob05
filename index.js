@@ -185,7 +185,8 @@ function tintImage(e) {
   worker.postMessage(getNormalizedFormData());
 
   worker.addEventListener("message", (e) => {
-    console.log(e);
+    const color = `rgb(${e.data.r}, ${e.data.g}, ${e.data.b})`;
+    document.getElementById("imgWrapper").style.backgroundColor = color;
   });
 }
 
