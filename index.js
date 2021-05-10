@@ -164,13 +164,28 @@ document.getElementById("invertStringCase").addEventListener("click", invertStri
 function invertStringCase(e) {
   e.preventDefault();
 
-  const worker = new Worker("worker.js");
+  const worker = new Worker("workers/togglecase.js");
   worker.postMessage(getNormalizedFormData());
 
   worker.addEventListener("message", (e) => {
     for (const [k, v] of Object.entries(e.data)) {
       formElem.elements[k].value = v;
     }
+  });
+}
+
+// Change tint for image based on form data
+
+document.getElementById("tintImage").addEventListener("click", tintImage);
+
+function tintImage(e) {
+  e.preventDefault();
+
+  const worker = new Worker("workers/tintimage.js");
+  worker.postMessage(getNormalizedFormData());
+
+  worker.addEventListener("message", (e) => {
+    console.log(e);
   });
 }
 
