@@ -30,6 +30,12 @@
       input:not([type="submit"]):invalid {
         border: 2px solid #ff0000;
       }
+
+      img {
+        border: 2px solid #0000ff;
+        height: 150px;
+        width: 200px;
+      }
     </style>
   </head>
 
@@ -59,6 +65,13 @@
     </table>
     <h2>Dodaj</h2>
     <form id="form">
+      <p>
+        <img id="img" src="/" />
+      </p>
+      <p>
+        <label for="url">URL</label>
+        <input id="url" name="url" />
+      </p>
       <p>
         <label for="firstName">Imię *</label>
         <input id="firstName" name="firstName" required />

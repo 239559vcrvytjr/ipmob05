@@ -245,3 +245,9 @@ function deleteDatabase() {
   indexedDB.deleteDatabase(DATABASE_NAME);
   alert("Database will be re-created when you refresh the page");
 }
+
+// Set form image source
+
+document.getElementById("url").addEventListener("blur", (e) => {
+  document.getElementById("img").src = e.target.value;
+});
