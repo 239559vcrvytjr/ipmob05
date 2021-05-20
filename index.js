@@ -186,7 +186,7 @@ function tintImage(e) {
 
   worker.addEventListener("message", (e) => {
     const color = `rgb(${e.data.r}, ${e.data.g}, ${e.data.b})`;
-    document.getElementById("imgWrapper").style.backgroundColor = color;
+    document.getElementById("canvasWrapper").style.backgroundColor = color;
   });
 }
 
@@ -267,15 +267,17 @@ function deleteDatabase() {
 const urlField = document.getElementById("url");
 
 urlField.addEventListener("blur", (e) => {
-  const img = document.getElementById("img");
-  fetch(e.target.value)
-    .then((r) => r.blob())
-    .then((blob) => {
-      img.src = URL.createObjectURL(blob);
-      urlField.setCustomValidity("");
-    })
-    .catch(() => {
-      img.src = undefined;
-      urlField.setCustomValidity("Niepoprawny URL");
-    });
+  const canvas = document.getElementById("canvas");
+  const canvasCtx = canvas.getContext("2d");
+
+  const img = new Image();
+  img.addEventListener("load", () => {
+    canvasCtx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+    urlField.setCustomValidity("");
+  });
+  img.addEventListener("error", () => {
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    urlField.setCustomValidity("Niepoprawny URL");
+  });
+  img.src = e.target.value;
 });
