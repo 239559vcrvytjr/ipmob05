@@ -112,7 +112,6 @@ function addClientRow(data) {
     data.businessName,
     data.nip,
     data.marketing,
-    data.image,
   ];
 
   const tableRow = table.insertRow(-1);
@@ -122,6 +121,19 @@ function addClientRow(data) {
     const tableCell = tableRow.insertCell(-1);
     tableCell.innerHTML = colData || "";
   }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 100;
+  canvas.height = 100;
+
+  const canvasCell = tableRow.insertCell(-1);
+  canvasCell.appendChild(canvas);
+
+  const img = new Image();
+  img.addEventListener("load", () => {
+    canvas.getContext("2d").drawImage(img, 0, 0);
+  });
+  img.src = data.image;
 
   const deleteButton = document.createElement("button");
   deleteButton.innerHTML = "Usuń";
