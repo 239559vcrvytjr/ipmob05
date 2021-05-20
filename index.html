@@ -68,6 +68,7 @@
           <th>Nazwa firmy</th>
           <th>NIP</th>
           <th>Marketing</th>
+          <th>Grafika</th>
           <th>Usuń</th>
         </tr>
       </thead>
@@ -75,11 +76,12 @@
     </table>
     <h2>Dodaj</h2>
     <form id="form">
+      <p>Uwaga: grafika zostanie zapisana w taki sposób, włącznie z rozmiarem i odcieniem</p>
       <div id="canvasWrapper">
         <canvas width="100" height="100" id="canvas"></canvas>
       </div>
       <p>
-        <label for="url">URL *</label>
+        <label for="url">URL grafiki *</label>
         <input id="url" name="url" type="url" required />
       </p>
       <p>

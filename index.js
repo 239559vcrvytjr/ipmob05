@@ -43,7 +43,8 @@ dbRequest.addEventListener("upgradeneeded", (e) => {
 function addClient(data) {
   const transaction = db.transaction(["clientsStore"], "readwrite");
   const store = transaction.objectStore("clientsStore");
-  const addRequest = store.add(data);
+
+  const addRequest = store.add({ ...data, image: getTintedCanvas().toDataURL("image/jpeg") });
 
   addRequest.addEventListener("success", (e) => {
     addClientRow({ ...data, id: e.target.result });
@@ -111,6 +112,7 @@ function addClientRow(data) {
     data.businessName,
     data.nip,
     data.marketing,
+    data.image,
   ];
 
   const tableRow = table.insertRow(-1);
@@ -265,12 +267,12 @@ function deleteDatabase() {
 // Set form image source
 
 const urlField = document.getElementById("url");
+const canvas = document.getElementById("canvas");
+const canvasCtx = canvas.getContext("2d");
 
 urlField.addEventListener("blur", (e) => {
-  const canvas = document.getElementById("canvas");
-  const canvasCtx = canvas.getContext("2d");
-
   const img = new Image();
+  img.crossOrigin = "anonymous";
   img.addEventListener("load", () => {
     canvasCtx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
     urlField.setCustomValidity("");
@@ -281,3 +283,20 @@ urlField.addEventListener("blur", (e) => {
   });
   img.src = e.target.value;
 });
+
+// Create copy of canvas with tint applied
+
+function getTintedCanvas() {
+  const tintedCanvas = document.createElement("canvas");
+  const tintedCanvasCtx = tintedCanvas.getContext("2d");
+
+  tintedCanvas.width = canvas.width;
+  tintedCanvas.height = canvas.height;
+
+  tintedCanvasCtx.drawImage(canvas, 0, 0);
+  tintedCanvasCtx.fillStyle = document.getElementById("canvasWrapper").style.backgroundColor;
+  tintedCanvasCtx.globalAlpha = 0.5;
+  tintedCanvasCtx.fillRect(0, 0, tintedCanvas.width, tintedCanvas.height);
+
+  return tintedCanvas;
+}
