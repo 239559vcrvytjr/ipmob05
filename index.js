@@ -264,6 +264,18 @@ function deleteDatabase() {
 
 // Set form image source
 
-document.getElementById("url").addEventListener("blur", (e) => {
-  document.getElementById("img").src = e.target.value;
+const urlField = document.getElementById("url");
+
+urlField.addEventListener("blur", (e) => {
+  const img = document.getElementById("img");
+  fetch(e.target.value)
+    .then((r) => r.blob())
+    .then((blob) => {
+      img.src = URL.createObjectURL(blob);
+      urlField.setCustomValidity("");
+    })
+    .catch(() => {
+      img.src = undefined;
+      urlField.setCustomValidity("Niepoprawny URL");
+    });
 });
