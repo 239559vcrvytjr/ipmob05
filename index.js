@@ -44,7 +44,7 @@ function addClient(data) {
   const transaction = db.transaction(["clientsStore"], "readwrite");
   const store = transaction.objectStore("clientsStore");
 
-  const addRequest = store.add({ ...data, image: getTintedCanvas().toDataURL("image/jpeg") });
+  const addRequest = store.add(data);
 
   addRequest.addEventListener("success", (e) => {
     addClientRow({ ...data, id: e.target.result });
@@ -167,7 +167,7 @@ function getNormalizedFormData() {
 formElem.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  addClient(getNormalizedFormData());
+  addClient({ ...getNormalizedFormData(), image: getTintedCanvas().toDataURL("image/jpeg") });
   formElem.reset();
 });
 
